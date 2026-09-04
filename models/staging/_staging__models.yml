@@ -1,0 +1,66 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Cleaned customer records. One row per customer. Includes internal test accounts (flagged), which downstream marts exclude."
+    columns:
+      - name: customer_id
+        description: "Primary key."
+        data_tests: [unique, not_null]
+      - name: country
+        description: "ISO-ish country code as provided by the source system."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['US', 'CO', 'MX']
+      - name: is_test_account
+        description: "TRUE for internal QA/test accounts that must never count toward business metrics."
+        data_tests: [not_null]
+
+  - name: stg_orders
+    description: "Cleaned orders. One row per order. All statuses retained; business filtering happens in marts."
+    columns:
+      - name: order_id
+        description: "Primary key."
+        data_tests: [unique, not_null]
+      - name: customer_id
+        description: "FK to stg_customers."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+      - name: product_id
+        description: "FK to stg_products."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_products')
+                field: product_id
+      - name: order_status
+        description: "Lifecycle status of the order."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['completed', 'cancelled', 'pending', 'refunded']
+      - name: quantity
+        description: "Units ordered."
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 1
+
+  - name: stg_products
+    description: "Cleaned product catalog. One row per product."
+    columns:
+      - name: product_id
+        description: "Primary key."
+        data_tests: [unique, not_null]
+      - name: unit_price
+        description: "List price per unit in USD."
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0

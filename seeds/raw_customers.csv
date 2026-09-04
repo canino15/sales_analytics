@@ -1,0 +1,6 @@
+customer_id,customer_name,country,is_test_account
+1,Acme Corp,US,false
+2,Globex,CO,false
+3,Initech,MX,false
+4,QA Internal,US,true
+5,Umbrella Ltd,CO,false

@@ -1,0 +1,22 @@
+name: dbt CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Install dbt packages
+        run: dbt deps
+      - name: Build and test
+        run: dbt build --profiles-dir .github/dbt --target ci

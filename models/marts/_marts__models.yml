@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: "Business-facing customer dimension. Internal test accounts are excluded."
+    columns:
+      - name: customer_id
+        data_tests: [unique, not_null]
+
+  - name: fct_orders
+    description: "One row per real customer order (test accounts excluded). All statuses retained."
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+      - name: order_amount
+        description: "quantity × unit_price, in USD."
+        data_tests: [not_null]
+      - name: order_status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['completed', 'cancelled', 'pending', 'refunded']
+
+  - name: fct_revenue_monthly
+    description: "Single source of truth for monthly revenue by country. Completed, non-test orders only."
+    columns:
+      - name: revenue
+        description: "{{ doc('revenue_definition') }}"
+        data_tests: [not_null]
+      - name: orders_count
+        data_tests: [not_null]

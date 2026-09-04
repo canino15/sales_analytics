@@ -1,0 +1,5 @@
+product_id,product_name,category,unit_price
+101,Widget,Hardware,25.00
+102,Gadget,Hardware,40.00
+103,License,Software,120.00
+104,Support Plan,Services,300.00

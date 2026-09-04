@@ -1,0 +1,15 @@
+version: 2
+
+unit_tests:
+  - name: revenue_excludes_non_completed_orders
+    description: "Monthly revenue must sum only completed orders; cancelled/pending/refunded contribute zero."
+    model: fct_revenue_monthly
+    given:
+      - input: ref('fct_orders')
+        rows:
+          - {order_id: 1, customer_country: 'US', order_date: '2026-07-03', order_status: 'completed', order_amount: 100.00}
+          - {order_id: 2, customer_country: 'US', order_date: '2026-07-15', order_status: 'cancelled', order_amount: 999.00}
+          - {order_id: 3, customer_country: 'US', order_date: '2026-07-20', order_status: 'completed', order_amount: 50.00}
+    expect:
+      rows:
+        - {order_month: '2026-07-01', customer_country: 'US', orders_count: 2, revenue: 150.00}
