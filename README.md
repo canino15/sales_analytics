@@ -1,5 +1,7 @@
 # sales_analytics — dbt Core + MotherDuck demo
 
+[![dbt CI](https://github.com/canino15/sales_analytics/actions/workflows/dbt-ci.yml/badge.svg)](https://github.com/canino15/sales_analytics/actions/workflows/dbt-ci.yml)
+
 A small, complete dbt project showing how a trustworthy revenue number is built: layered
 models, tests (generic + singular + unit), documentation with lineage, and CI. Companion to
 the blog post "You Don't Have a Dashboard Problem. You Have a Process Problem."
