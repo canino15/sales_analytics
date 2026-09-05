@@ -66,7 +66,6 @@ dbt docs generate && dbt docs serve
 export MOTHERDUCK_TOKEN="your_token"
 dbt build --target prod
 ```
-<!-- TODO: screenshot of a green `dbt build --target prod` -->
 
 ## Tests
 - Generic: unique, not_null, relationships, accepted_values, dbt_utils.accepted_range
@@ -74,6 +73,6 @@ dbt build --target prod
 - Unit: revenue sums only completed orders (`dbt test --select test_type:unit`)
 
 ## CI
-GitHub Actions runs `dbt build` on every push and PR (see badge above).
-
-## Notes
+GitHub Actions runs `dbt build` on every push and PR (badge above). CI is self-contained:
+it builds against a local DuckDB file inside the runner, so no MotherDuck secret is needed
+for the pipeline to stay green.
