@@ -14,7 +14,39 @@ completed, non-test orders only.
 ## Architecture
 `seeds (raw)` → `staging` (clean) → `intermediate` (join + economics) → `marts` (dim/fct)
 
-![lineage](docs/lineage.png) <!-- TODO: screenshot from `dbt docs serve` -->
+```mermaid
+flowchart LR
+    subgraph raw["seeds (raw)"]
+        rc[raw_customers]
+        ro[raw_orders]
+        rp[raw_products]
+    end
+    subgraph staging["staging"]
+        sc[stg_customers]
+        so[stg_orders]
+        sp[stg_products]
+    end
+    subgraph intermediate["intermediate"]
+        ioe[int_orders_enriched]
+    end
+    subgraph marts["marts"]
+        dc[dim_customers]
+        fo[fct_orders]
+        frm[fct_revenue_monthly]
+    end
+
+    rc --> sc
+    ro --> so
+    rp --> sp
+    sc --> ioe
+    so --> ioe
+    sp --> ioe
+    sc --> dc
+    ioe --> fo
+    fo --> frm
+```
+
+The same graph is browsable interactively with `dbt docs generate && dbt docs serve`.
 
 ## Business rules (deliberate)
 - Internal test accounts are excluded from all marts.
