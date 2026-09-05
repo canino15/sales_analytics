@@ -43,4 +43,3 @@ dbt build --target prod
 GitHub Actions runs `dbt build` on every push and PR (see badge above).
 
 ## Notes
-Staging models were scaffolded with [dbt-coves](https://github.com/datacoves/dbt-coves) (optional). <!-- keep only if you actually use it -->
